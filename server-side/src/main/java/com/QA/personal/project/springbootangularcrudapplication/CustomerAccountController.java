@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,8 +28,14 @@ public class CustomerAccountController {
     
     @RequestMapping(value="/method2/{accountID}", method=RequestMethod.POST)
     @ResponseBody
-    public String getOrder(@PathVariable String accountID){
+    public String returnURLParam(@PathVariable String accountID){
     	return accountID;
     }
-
+    
+    
+    @RequestMapping(value="/method3/{accountID}", method=RequestMethod.POST)
+    @ResponseBody
+    public String returnRequestBody(@PathVariable String accountID, @RequestBody String JSON){
+    	return accountID + JSON;
+    }
 }

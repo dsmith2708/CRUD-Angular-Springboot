@@ -5,10 +5,12 @@ import { AppComponent } from './app.component';
 
 import { AccountService } from './shared/account.service';
 import { HttpClientModule } from '@angular/common/http';
+import { AccountListComponent } from './account-list/account-list.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AccountListComponent
   ],
   imports: [
     BrowserModule,

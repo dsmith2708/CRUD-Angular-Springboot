@@ -2,6 +2,7 @@ package com.QA.personal.project.springbootangularcrudapplication;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.*;
@@ -11,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerAccount {
-	@Id @GeneratedValue
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private @NonNull String firstName;
 	private @NonNull String lastName;

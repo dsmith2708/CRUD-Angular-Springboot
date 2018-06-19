@@ -7,6 +7,9 @@ import { Observable } from 'rxjs/Observable';
 })
 export class AccountService {
 
+  public API = '//localhost:8080';
+  public ACCOUNT_API = this.API + '/cars';
+
   constructor(private http: HttpClient) {
   }
 

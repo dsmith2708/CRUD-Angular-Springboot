@@ -4,13 +4,18 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
 
 @RestController
 public class CustomerAccountController {
@@ -22,20 +27,39 @@ public class CustomerAccountController {
 
     @GetMapping("/all-customers")
     @CrossOrigin(origins = "http://localhost:4200")
-    public Collection<CustomerAccount> coolCars() {
-        return repository.findAll().stream().collect(Collectors.toList());
+    public String allCustomers() {
+        return new Gson().toJson(repository.findAll());
     }
     
-    @RequestMapping(value="/method2/{accountID}", method=RequestMethod.POST)
+    @GetMapping("/find-customer/{accountID}")
     @ResponseBody
-    public String returnURLParam(@PathVariable String accountID){
-    	return accountID;
+    public String findIndividualCustomer(@PathVariable long accountID){
+    	return new Gson().toJson(repository.findById(accountID));
     }
     
-    
-    @RequestMapping(value="/method3/{accountID}", method=RequestMethod.POST)
+    @PostMapping("/add")
     @ResponseBody
-    public String returnRequestBody(@PathVariable String accountID, @RequestBody String JSON){
-    	return accountID + JSON;
+    public String createCustomer(@RequestBody String customerJson){
+    	repository.save(new Gson().fromJson(customerJson, CustomerAccount.class));
+    	return "\"message\" : \"Create successful\"";
+    }
+    
+    @PutMapping("/update")
+    @ResponseBody
+    public String updateCustomer(@RequestBody String customerJson) {
+    	CustomerAccount customerFromJson = new Gson().fromJson(customerJson, CustomerAccount.class);
+    	CustomerAccount customerFromDB = repository.findById(customerFromJson.getID()).get();
+    	customerFromDB.setAccountNo(customerFromJson.getAccountNo());
+    	customerFromDB.setFirstName(customerFromJson.getFirstName());
+    	customerFromDB.setLastName(customerFromJson.getLastName());
+    	repository.save(customerFromDB);
+    	return "\"message\" : \"Update successful\"";
+    }
+    
+    @DeleteMapping(value="/delete-customer/{accountID}")
+    @ResponseBody
+    public String returnRequestBody(@PathVariable long accountID, @RequestBody String JSON){
+    	repository.deleteById(accountID);
+    	return "\"message\" : \"Delete successful\"";
     }
 }

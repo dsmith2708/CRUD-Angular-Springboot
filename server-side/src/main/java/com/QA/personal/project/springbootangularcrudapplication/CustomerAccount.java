@@ -36,6 +36,9 @@ public class CustomerAccount {
 	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
 	}
+	public long getID() {
+		return id;
+	}
 	
 	
 }
